@@ -9,9 +9,11 @@
 </head>
 
 <body>
-  <a href="/upload">上传</a>
-  <hr />
-  <a href="/list">列表</a>
+  <form action="/upload" method="POST" enctype="multipart/form-data">
+    <input type="file" name="image">
+    <input type="submit" value="上传">
+  </form>
+  <a href="/">回到首页</a>
 </body>
 
 </html>
