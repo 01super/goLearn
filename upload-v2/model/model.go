@@ -1,9 +1,11 @@
 package model
 
 import (
-	"log"
+	"errors"
+	// mysql
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
+	"log"
 )
 
 // Db 数据库操作句柄
@@ -25,4 +27,31 @@ func init() {
 type Info struct {
 	ID, Unix         int64
 	Name, Path, Note string
+}
+
+// InfoAdd 向数据库插入数据
+func InfoAdd(mod *Info) error {
+	result, err := Db.Exec("insert into info (`name`, path, unix, note) values (?,?,?,?)", mod.Name, mod.Path, mod.Unix, mod.Note)
+	if err != nil {
+		return err
+	}
+	id, _ := result.LastInsertId()
+	if id < 1 {
+		return errors.New("插入失败")
+	}
+	return nil
+}
+
+// InfoGet 获取对应id的信息
+func InfoGet(id int64) (Info, error) {
+	mod := Info{}
+	err := Db.Get(&mod, "select * from info where id = ?", id)
+	return mod, err
+}
+
+// InfoList 获取列表
+func InfoList() ([]Info, error) {
+	mod := make([]Info, 0, 8)
+	err := Db.Select(&mod, "select * from info")
+	return mod, err
 }
