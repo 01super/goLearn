@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>列表</title>
+  <style>
+    #list li img {
+      max-width: 300px;
+    }
+  </style>
+</head>
+<body>
+  <ul id="list">
+  </ul>
+</body>
+<script src="./static/js/jquery-3.4.1.min.js"></script>
+<script>
+  function init () {
+    $.get('api/list', function (res) {
+      console.log(res)
+      var list = []
+      for (let i = 0; i < res.length; i++) {
+        list.push('<li><a href="/detial?id=' + res[i].ID + '"><img src="' + res[i].Path + '" alt="未发现"></a>备注：'+ res[i].Note+'<button onclick="drop('+res[i].ID+')">删除</button></li>')
+      }
+      $('#list').append(list)
+    })
+  }
+  init()
+  function drop(id) {
+    $.get("/api/delete",{id},function(res){
+      if(res === "删除成功") {
+        init()
+      }else{
+        alert("删除失败")
+      }
+    })
+  }
+</script>
+
+</html>

@@ -15,6 +15,7 @@ func Run() {
 	http.HandleFunc("/detial", control.DetialView)
 	http.HandleFunc("/api/list", control.APIList)
 	http.HandleFunc("/list", control.ListVIew)
+	http.HandleFunc("/api/delete", control.APIDrop)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static/"))))
 	http.ListenAndServe(":8080", nil)
 	mod := model.Info{}

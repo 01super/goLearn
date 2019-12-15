@@ -55,3 +55,16 @@ func InfoList() ([]Info, error) {
 	err := Db.Select(&mod, "select * from info")
 	return mod, err
 }
+
+// InfoDrop delete
+func InfoDrop(id int64) error {
+	result, err := Db.Exec("delete from info where id = ?", id)
+	if err != nil {
+		return err
+	}
+	rows, _ := result.RowsAffected()
+	if rows != 1 {
+		return errors.New("删除失败")
+	}
+	return nil
+}

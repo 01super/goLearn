@@ -93,6 +93,19 @@ func APIList(w http.ResponseWriter, r *http.Request) {
 	w.Write(buf)
 }
 
+// APIDrop 删除数据
+func APIDrop(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	idStr := r.Form.Get("id")
+	id, _ := strconv.ParseInt(idStr, 10, 64)
+	err := model.InfoDrop(id)
+	if err != nil {
+		io.WriteString(w, "删除失败")
+		return
+	}
+	io.WriteString(w, "删除成功")
+}
+
 // ListVIew listview
 func ListVIew(w http.ResponseWriter, r *http.Request) {
 	html := loadHTML("../views/list.html")
