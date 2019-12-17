@@ -2,10 +2,12 @@ package model
 
 import (
 	"errors"
+	"fmt"
 	// mysql
+	"log"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
-	"log"
 )
 
 // Db 数据库操作句柄
@@ -31,8 +33,10 @@ type Artical struct {
 
 // ArticalAdd 向数据库插入数据
 func ArticalAdd(mod *Artical) error {
-	result, err := Db.Exec("insert into essay (title, describe, main, type, time) values (?,?,?,?,?)", mod.Title, mod.Describe, mod.Main, mod.Type, mod.Time)
+	fmt.Println(mod.Title, mod.Describe, mod.Main, mod.Type, mod.Time)
+	result, err := Db.Exec("insert into essay (`title`, `describe`, `main`, `type`, `time`) values (?,?,?,?,?)", mod.Title, mod.Describe, mod.Main, mod.Type, mod.Time)
 	if err != nil {
+		fmt.Println(err)
 		return err
 	}
 	id, _ := result.LastInsertId()

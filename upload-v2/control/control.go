@@ -88,7 +88,7 @@ func APIList(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.Write([]byte("获取失败"))
 	}
-	buf, _ := json.Marshal(mod)
+	buf, _ := json.Marshal(mod) // json序列化
 	w.Header().Set("Content-type", "application/json")
 	w.Write(buf)
 }

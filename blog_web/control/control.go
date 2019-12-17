@@ -1,16 +1,40 @@
 package control
 
 import (
+	"encoding/json"
 	"fmt"
-	"io"
+	"github.com/01super/blog_web/model"
+	"io/ioutil"
 	"net/http"
 )
 
 // AddArticle AddArticle
 func AddArticle(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("title")
-	r.ParseForm()
-	title := r.Form.Get("title")
-	fmt.Println(title)
-	io.WriteString(w, title)
+	// 检查是否为post请求
+	fmt.Println("http.MethodPost", http.MethodPost)
+	if r.Method != http.MethodPost {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		fmt.Fprintf(w, "invalid_http_method")
+		return
+	}
+	//application/x-www-form-urlencoded 格式
+	//r.ParseForm()
+	//name:=r.PostFormValue("name")
+	//fmt.Fprintf(w, "x-www-form-urlencoded -> name="+name+"\n")
+
+	//multipart/form-data 格式
+	//r.ParseMultipartForm(32<<20)
+	//name:=r.PostFormValue("name")
+	//fmt.Fprintf(w, "multipart/form-data -> name="+name+"\n")
+
+	//application/json格式
+	defer r.Body.Close()
+	con, _ := ioutil.ReadAll(r.Body) //获取post的数据
+	fmt.Println(con)
+
+	mod := model.Artical{}
+	fmt.Println(mod)
+	json.Unmarshal(con, &mod)
+	fmt.Println(mod.Title)
+	model.ArticalAdd(&mod)
 }

@@ -10,5 +10,5 @@ func Run() {
 	http.HandleFunc("/api/addArticle", control.AddArticle)
 	// http.HandleFunc("/", control.IndexView)
 	// http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static/"))))
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":9000", nil)
 }
